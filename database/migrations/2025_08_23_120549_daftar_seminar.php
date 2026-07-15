@@ -19,6 +19,8 @@ return new class extends Migration
             $table->string('no_hp', 20);
             $table->string('no_undian')->unique();
             $table->string('kode_absen')->unique();
+            $table->string('bukti_follow_ig')->nullable(); // Upload bukti
+            $table->boolean('is_attended')->default(false); // Regis ulang
             $table->timestamps();
         });
     }

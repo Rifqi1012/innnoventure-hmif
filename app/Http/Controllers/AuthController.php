@@ -2,48 +2,50 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\AuthService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
-use App\Models\Juri;
-use Illuminate\Support\Facades\Hash;
-
 
 class AuthController extends Controller
 {
+    protected $authService;
+
+    public function __construct(AuthService $authService)
+    {
+        $this->authService = $authService;
+    }
+
+    public function register(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8|confirmed',
+        ]);
+
+        $data = $this->authService->register($validated);
+
+        return $this->successResponse($data, 'Registrasi berhasil', 201);
+    }
+
     public function login(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'email' => 'required|email',
             'password' => 'required',
         ]);
 
-        // Cari juri berdasarkan email
-        $juri = Juri::where('email', $request->email)->first();
-
-        // Verifikasi juri dan password
-        if (!$juri || !Hash::check($request->password, $juri->password)) {
-            throw ValidationException::withMessages([
-                'email' => ['Email atau password yang Anda masukkan salah.'],
-            ]);
+        try {
+            $data = $this->authService->login($validated);
+            return $this->successResponse($data, 'Login berhasil');
+        } catch (ValidationException $e) {
+            return $this->errorResponse($e->getMessage(), 401);
         }
-
-        // Hapus token lama & buat token baru
-        $juri->tokens()->delete();
-        $token = $juri->createToken('auth-token')->plainTextToken;
-
-        return response()->json([
-            'message' => 'Login berhasil.',
-            'user' => $juri,
-            'token' => $token, // <-- Kirim token ke frontend
-        ]);
     }
 
     public function logout(Request $request)
     {
-        // Hapus token yang sedang digunakan untuk otentikasi
-        $request->user()->currentAccessToken()->delete();
-
-        return response()->json(['message' => 'Logout berhasil.']);
+        $this->authService->logout($request->user());
+        return $this->successResponse(null, 'Logout berhasil');
     }
 }

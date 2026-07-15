@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('cabang_lomba_id')->constrained('cabang_lombas')->onDelete('cascade');
             $table->string('nama');
             $table->string('instansi_id');
+            $table->enum('status', ['Pending', 'Approved', 'Rejected', 'Need Revision'])->default('Pending');
             $table->timestamps();
         });
     }

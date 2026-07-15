@@ -10,10 +10,12 @@ use Filament\Panel;
 use Filament\Models\Contracts\FilamentUser;
 use Illuminate\Support\Facades\Log;
 
+use Laravel\Sanctum\HasApiTokens;
+
 class User extends Authenticatable implements FilamentUser
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -24,6 +26,7 @@ class User extends Authenticatable implements FilamentUser
         'name',
         'email',
         'password',
+        'role',
     ];
 
     /**
@@ -52,7 +55,7 @@ class User extends Authenticatable implements FilamentUser
     public function canAccessPanel(Panel $panel): bool
     {
         Log::info('canAccessPanel dipanggil untuk user id: ' . $this->id);
-        return true; // Ganti logika ini sesuai kebutuhan akses kamu
+        return $this->role === 'admin';
     }
 
     // Kalau kamu mau, method ini bisa kamu hapus atau biarkan, tapi Filament default pakai canAccessPanel()

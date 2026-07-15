@@ -11,15 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('webdev_progress', function (Blueprint $table) {
+        Schema::create('ui_progress', function (Blueprint $table) {
             $table->id();
             $table->foreignId('tim_id')->constrained('tims')->onDelete('cascade');
             $table->string('email_ketua')->unique();
             $table->string('judul_proyek');
-            $table->string('link_github')->nullable();
-            $table->string('pdf')->nullable(); // PDF Proposal/Doc
-            $table->string('link_hosting')->nullable(); 
+            $table->string('link_figma')->nullable();
             $table->string('ppt')->nullable(); // PowerPoint
+            $table->string('pdf')->nullable(); // PDF Proposal/Doc
             $table->timestamps();
         });
     }
@@ -29,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('webdev_progress');
+        Schema::dropIfExists('ui_progress');
     }
 };

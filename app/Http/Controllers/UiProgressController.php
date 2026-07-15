@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\WebdevProgress;
+use App\Models\UiProgress;
 use App\Services\CompetitionService;
 use Illuminate\Http\Request;
 
-class WebDevController extends Controller
+class UiProgressController extends Controller
 {
     protected $competitionService;
 
@@ -15,15 +15,15 @@ class WebDevController extends Controller
         $this->competitionService = $competitionService;
     }
 
-    public function index(Request $request)
+    public function index()
     {
-        $allProgresses = WebdevProgress::with(['tim.instansi'])->get();
+        $allProgresses = UiProgress::with(['tim.instansi'])->get();
         return $this->successResponse($allProgresses);
     }
 
     public function show($id)
     {
-        $progress = WebdevProgress::with('tim.instansi')->find($id);
+        $progress = UiProgress::with('tim.instansi')->find($id);
 
         if (!$progress) {
             return $this->errorResponse('Data not found', 404);
@@ -36,15 +36,14 @@ class WebDevController extends Controller
     {
         $validated = $request->validate([
             'tim_id'          => 'required|exists:tims,id',
-            'email_ketua'     => 'required|email|unique:webdev_progress,email_ketua',
+            'email_ketua'     => 'required|email|unique:ui_progress,email_ketua',
             'judul_proyek'    => 'required|string|max:255',
-            'link_github'     => 'nullable|url',
-            'link_hosting'    => 'nullable|url',
+            'link_figma'      => 'nullable|url',
             'pdf'             => 'nullable|file|mimes:pdf|max:5120',
             'ppt'             => 'nullable|file|mimes:ppt,pptx,pdf|max:10240',
         ]);
 
-        $progress = $this->competitionService->submitWebdev($validated);
+        $progress = $this->competitionService->submitUi($validated);
 
         return $this->successResponse($progress->load('tim.instansi'), 'Data berhasil disimpan', 201);
     }

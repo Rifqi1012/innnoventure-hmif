@@ -20,7 +20,7 @@ use App\Http\Controllers\PenilaianController;
 use App\Http\Controllers\AuthController;
 
 Route::post('/login', [AuthController::class, 'login']);
-
+Route::post('/register', [AuthController::class, 'register']);
 Route::prefix('cabang-lomba')->group(function () {
     Route::get('/', [CabangLombaController::class, 'index']);
     Route::get('/{id}', [CabangLombaController::class, 'show']);
@@ -34,22 +34,27 @@ Route::prefix('instansi')->group(function () {
 Route::prefix('tim')->group(function () {
     Route::get('/', [TimController::class, 'index']);
     Route::get('/{id}', [TimController::class, 'show']);
+    Route::patch('/{id}/status', [TimController::class, 'updateStatus']);
 });
 
 Route::prefix('ml-match')->group(function () {
-    Route::get('/', [MlMatchController::class, 'index']);
-    Route::get('/{id}', [MlMatchController::class, 'show']);
+    Route::get('/', [\App\Http\Controllers\MlMatchController::class, 'index']);
+    Route::get('/{id}', [\App\Http\Controllers\MlMatchController::class, 'show']);
+    Route::post('/generate', [\App\Http\Controllers\MlMatchController::class, 'generateBracket']);
+    Route::patch('/{id}/score', [\App\Http\Controllers\MlMatchController::class, 'updateScore']);
 });
 
+
+Route::prefix('ui-progress')->group(function () {
+    Route::get('/', [\App\Http\Controllers\UiProgressController::class, 'index']);
+    Route::get('/{id}', [\App\Http\Controllers\UiProgressController::class, 'show']);
+    Route::post('/', [\App\Http\Controllers\UiProgressController::class, 'store']);
+});
 
 Route::prefix('webdev-progress')->group(function () {
     Route::get('/', [WebDevController::class, 'index']);
     Route::get('/{id}', [WebDevController::class, 'show']);
     Route::post('/', [WebDevController::class, 'store']);
-});
-Route::prefix('sayembara-logo')->group(function () {
-    Route::get('/', [SayembaraController::class, 'index']);
-    Route::get('/{id}', [SayembaraController::class, 'show']);
 });
 
 Route::prefix('seminar')->group(function () {
@@ -68,9 +73,10 @@ Route::prefix('medpart')->group(function () {
 });
 
 Route::prefix('daftarseminar')->group(function () {
-    Route::get('/', [DaftarSeminar::class, 'index']);
-    Route::get('/{kode_absen}', [DaftarSeminar::class, 'showByAbsen']);
-    Route::post('/', [DaftarSeminar::class, 'createDaftarSeminar']);
+    Route::get('/', [\App\Http\Controllers\DaftarSeminarController::class, 'index']);
+    Route::get('/{kode_absen}', [\App\Http\Controllers\DaftarSeminarController::class, 'showByAbsen']);
+    Route::post('/', [\App\Http\Controllers\DaftarSeminarController::class, 'createDaftarSeminar']);
+    Route::post('/attend', [\App\Http\Controllers\DaftarSeminarController::class, 'attendSeminar']);
 });
 
 Route::prefix('aspek-penilaian')->group(function () {
@@ -95,11 +101,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::post('/penilaian', [PenilaianController::class, 'store']);
     Route::post('/penilaian/catatan-webdev', [PenilaianController::class, 'updateCatatanJuri']);
-
-    Route::post('/penilaian-sayembara', [PenilaianSayembaraController::class, 'storeOrUpdate']);
 });
-Route::get('/penilaian-sayembara/{progressId}/juri/{juriId}', [PenilaianSayembaraController::class, 'getScoresByJuri']);
-Route::get('/penilaian-sayembara/{sayembaraProgress}', [PenilaianSayembaraController::class, 'show']);
-
-
 Route::get('/undian-peserta', [DaftarSeminarController::class, 'getUndianData']);
