@@ -12,6 +12,10 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\View;
+use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
+use pxlrbt\FilamentExcel\Exports\ExcelExport;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class DaftarSeminarResource extends Resource
 {
@@ -84,6 +88,10 @@ class DaftarSeminarResource extends Resource
                 Tables\Columns\TextColumn::make('kode_absen')
                     ->searchable()
                     ->sortable(),
+                Tables\Columns\IconColumn::make('kehadiran')
+                    ->label('Hadir?')
+                    ->boolean()
+                    ->getStateUsing(fn ($record) => $record->absensis()->exists()),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -104,9 +112,24 @@ class DaftarSeminarResource extends Resource
                 Tables\Actions\ViewAction::make(),
             ])
             ->bulkActions([
-                // Tables\Actions\BulkActionGroup::make([
-                //     Tables\Actions\DeleteBulkAction::make(),
-                // ]),
+                Tables\Actions\BulkActionGroup::make([
+                    ExportBulkAction::make()
+                        ->label('Export to Excel')
+                        ->exports([
+                            ExcelExport::make()->fromTable(),
+                        ]),
+                    Tables\Actions\BulkAction::make('export_pdf')
+                        ->label('Export to PDF')
+                        ->icon('heroicon-o-document-arrow-down')
+                        ->action(function (\Illuminate\Database\Eloquent\Collection $records) {
+                            $pdf = Pdf::loadView('pdf.seminar_participants', ['records' => $records]);
+                            return response()->streamDownload(function () use ($pdf) {
+                                echo $pdf->output();
+                            }, 'seminar_participants.pdf');
+                        })
+                        ->deselectRecordsAfterCompletion(),
+                    Tables\Actions\DeleteBulkAction::make(),
+                ]),
             ]);
     }
 
