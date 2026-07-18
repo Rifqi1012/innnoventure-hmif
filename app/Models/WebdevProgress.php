@@ -19,6 +19,7 @@ class WebdevProgress extends Model
         'link_demo',
         'link_hosting',
         'ppt',
+        'pdf',
     ];
 
     /**

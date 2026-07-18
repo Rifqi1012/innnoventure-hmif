@@ -26,6 +26,7 @@ class DaftarSeminar extends Model
         'no_hp',
         'no_undian',
         'kode_absen',
+        'bukti_follow_ig',
     ];
 
     /**

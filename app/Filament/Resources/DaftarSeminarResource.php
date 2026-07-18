@@ -60,6 +60,12 @@ class DaftarSeminarResource extends Resource
                     ->dehydrated(false)
                     ->default('Generated automatically')
                     ->maxLength(255),
+                Forms\Components\FileUpload::make('bukti_follow_ig')
+                    ->label('Bukti Follow IG')
+                    ->image()
+                    ->directory('seminar/bukti_follow')
+                    ->maxSize(5120)
+                    ->columnSpanFull(),
             ]);
     }
 
@@ -88,6 +94,9 @@ class DaftarSeminarResource extends Resource
                 Tables\Columns\TextColumn::make('kode_absen')
                     ->searchable()
                     ->sortable(),
+                Tables\Columns\ImageColumn::make('bukti_follow_ig')
+                    ->label('Bukti Follow')
+                    ->circular(),
                 Tables\Columns\IconColumn::make('kehadiran')
                     ->label('Hadir?')
                     ->boolean()
