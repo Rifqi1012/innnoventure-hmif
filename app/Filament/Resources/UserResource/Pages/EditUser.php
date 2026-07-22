@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Filament\Resources\JuriResource\Pages;
+namespace App\Filament\Resources\UserResource\Pages;
 
-use App\Filament\Resources\JuriResource;
+use App\Filament\Resources\UserResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 
-class EditJuri extends EditRecord
+class EditUser extends EditRecord
 {
-    protected static string $resource = JuriResource::class;
+    protected static string $resource = UserResource::class;
 
     protected function getHeaderActions(): array
     {
@@ -19,6 +19,6 @@ class EditJuri extends EditRecord
 
     protected function getRedirectUrl(): string
     {
-        return JuriResource::getUrl('index');
+        return $this->getResource()::getUrl('index');
     }
 }
