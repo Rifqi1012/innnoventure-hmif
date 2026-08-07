@@ -39,6 +39,13 @@ class Absensi extends Page
         );
 
         if ($absen->wasRecentlyCreated) {
+            // Send attendance email
+            try {
+                \Illuminate\Support\Facades\Mail::to($peserta->email)->send(new \App\Mail\SeminarAttendanceMail($peserta));
+            } catch (\Exception $e) {
+                \Illuminate\Support\Facades\Log::error('Gagal mengirim email kehadiran seminar dari panel: ' . $e->getMessage());
+            }
+
             Notification::make()
                 ->success()
                 ->title("Absensi berhasil untuk {$peserta->nama}")
