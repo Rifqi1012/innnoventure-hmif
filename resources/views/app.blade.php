@@ -6,6 +6,7 @@
         <title>Innoventure 2026</title>
         
         <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+         <link rel="icon" type="image/png" href="{{ asset('logo.png') }}">
 
         <!-- Vite React Scripts -->
         @viteReactRefresh
