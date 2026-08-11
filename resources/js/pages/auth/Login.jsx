@@ -23,8 +23,12 @@ export default function Login() {
     };
 
     return (
-        <div className="bg-slate-900/60 backdrop-blur-xl p-8 rounded-3xl shadow-2xl border border-slate-800">
-            <div className="text-center mb-8">
+        <div className="bg-slate-900/60 backdrop-blur-xl p-8 rounded-3xl shadow-2xl border border-slate-800 relative">
+            <Link to="/" className="absolute top-6 left-6 inline-flex items-center text-sm font-semibold text-slate-400 hover:text-white transition-colors">
+                <svg className="w-4 h-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" /></svg>
+                Back
+            </Link>
+            <div className="text-center mb-8 mt-4">
                 <h2 className="text-3xl font-bold text-white">Welcome Back</h2>
                 <p className="text-sm text-slate-400 mt-2">Enter your credentials to continue</p>
             </div>

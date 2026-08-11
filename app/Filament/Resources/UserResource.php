@@ -12,6 +12,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 
 class UserResource extends Resource
 {
@@ -31,10 +32,6 @@ class UserResource extends Resource
                     ->required()
                     ->maxLength(255),
                 Forms\Components\DateTimePicker::make('email_verified_at'),
-                Forms\Components\TextInput::make('raw_password')
-                    ->label('Generated Password')
-                    ->disabled()
-                    ->hidden(fn (string $context): bool => $context === 'create'),
                 Forms\Components\Select::make('role')
                     ->options([
                         'peserta_webdev' => 'Peserta Web Development',
@@ -58,6 +55,11 @@ class UserResource extends Resource
                 Tables\Columns\TextColumn::make('email_verified_at')
                     ->dateTime()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('raw_password')
+                    ->label('Generated Password')
+                    ->searchable()
+                    ->copyable()
+                    ->copyMessage('Password tersalin!'),
                 Tables\Columns\TextColumn::make('role')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
@@ -79,6 +81,7 @@ class UserResource extends Resource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
+                    ExportBulkAction::make(),
                 ]),
             ]);
     }

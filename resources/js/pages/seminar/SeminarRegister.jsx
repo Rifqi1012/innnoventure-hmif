@@ -99,8 +99,12 @@ export default function SeminarRegister() {
     }
 
     return (
-        <div className="max-w-3xl mx-auto">
-            <div className="mb-10 text-center relative">
+        <div className="max-w-3xl mx-auto relative">
+            <Link to="/" className="absolute top-0 left-0 inline-flex items-center text-sm font-semibold text-slate-500 hover:text-indigo-600 transition-colors">
+                <svg className="w-4 h-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" /></svg>
+                Kembali ke Halaman Utama
+            </Link>
+            <div className="mb-10 mt-12 text-center relative">
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[200px] h-[200px] bg-indigo-500/10 rounded-full blur-[60px] -z-10"></div>
                 <h1 className="text-4xl font-black text-slate-900 mb-4 tracking-tight">Seminar Registration</h1>
                 <p className="text-lg text-slate-500">Secure your digital ticket for the biggest National Tech Seminar.</p>

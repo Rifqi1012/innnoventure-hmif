@@ -76,6 +76,10 @@ export default function WebDev() {
                 <div className="absolute bottom-0 left-0 w-40 h-40 bg-purple-50 rounded-tr-[80px] -z-0"></div>
 
                 <div className="relative z-10 p-8 sm:p-12">
+                    <button onClick={() => navigate('/dashboard')} className="mb-6 flex items-center text-sm font-semibold text-slate-500 hover:text-indigo-600 transition-colors">
+                        <svg className="w-4 h-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" /></svg>
+                        Kembali ke Dashboard
+                    </button>
                     <div className="mb-10 flex items-start justify-between">
                         <div>
                             <div className="w-12 h-12 bg-indigo-100 text-indigo-600 rounded-2xl flex items-center justify-center mb-6">

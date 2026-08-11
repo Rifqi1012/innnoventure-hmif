@@ -32,6 +32,17 @@ function ScrollReveal({ children, className = '', delay = 0 }) {
     );
 }
 
+const timelineData = [
+    { date: "Senin, 20 Juli 2026", title: "Pembukaan Pendaftaran", desc: "Registrasi resmi dibuka untuk seluruh cabang lomba (Web Dev, UI, dan ML)" },
+    { date: "Sabtu, 8 Agustus 2026", title: "Penutupan Pendaftaran", desc: "Batas akhir pendaftaran dan pengumpulan administrasi peserta" },
+    { date: "Senin, 10 Agustus 2026", title: "Opening Perlombaan", desc: "Pembukaan resmi acara sekaligus pembekalan regulasi dan teknis lomba" },
+    { date: "Selasa, 11 Agustus - Senin, 18 Agustus 2026", title: "Sesi Lomba Web Dev, UI Design, ML", desc: "Waktu bagi peserta untuk merancang dan mengeksekusi karya, pada tanggal 13 dimulainya lomba ML, dan di tanggal 14 Final ML" },
+    { date: "Senin, 19 Agustus 2026", title: "Pengumpulan Karya", desc: "Deadline final bagi peserta Web Dev dan UI untuk menyetor hasil karya." },
+    { date: "Selasa, 19 Agustus - 22 Agustus 2026", title: "Penjurian Setiap Perlombaan", desc: "Waktu bagi peserta untuk merancang dan mengeksekusi karya" },
+    { date: "Kamis, 22 Agustus 2026", title: "Pengumuman Top 3 dan juara ML", desc: "Perilisan daftar 3 besar finalis terbaik dari setiap cabang perlombaan" },
+    { date: "Senin, 24 Agustus 2026", title: "Closing, Seminar, & Awarding", desc: "Hari puncak acara yang berisi seminar, penentuan juara utama, dan pembagian hadiah" },
+];
+
 export default function Landing() {
     return (
         <div className="w-full">
@@ -52,7 +63,7 @@ export default function Landing() {
                 <ScrollReveal className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
                     <div className="animate-floating">
                         <div className="inline-block mb-6 px-4 py-2 rounded-full bg-brand-pink/10 border border-brand-pink/30 text-brand-purple font-semibold text-sm tracking-widest uppercase shadow-[0_0_15px_rgba(213,172,255,0.4)]">
-                            Event IT se-Bandung untuk SMA/SMK & Mahasiswa
+                            Event IT se-Jawa Barat untuk SMA/SMK
                         </div>
                         <h2 className="text-3xl md:text-5xl font-black text-brand-white tracking-widest mb-2 uppercase drop-shadow-lg">
                             Innovation Adventure
@@ -110,6 +121,82 @@ export default function Landing() {
                                 <div className="text-5xl font-black text-brand-purple mb-2">1</div>
                                 <div className="text-brand-white font-bold">Grand Seminar</div>
                             </ScrollReveal>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* Timeline Section */}
+            <section id="timeline" className="py-24 bg-brand-black relative overflow-hidden border-t border-brand-purple/20">
+                {/* Plus Pattern Background */}
+                <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:40px_40px] opacity-30 pointer-events-none"></div>
+                <div className="absolute top-1/4 left-1/4 w-[400px] h-[400px] bg-brand-purple/10 rounded-full blur-[100px] -z-10 animate-pulse"></div>
+
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+
+                    {/* Total Prizepool */}
+                    <div className="text-center mb-16">
+                        <ScrollReveal>
+                            <h3 className="text-xl md:text-2xl font-black text-brand-white tracking-[0.2em] mb-4 uppercase">Total Prizepool</h3>
+                            <h2 className="text-4xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-brand-purple to-brand-pink tracking-tighter mb-16 drop-shadow-[0_0_20px_rgba(213,172,255,0.3)]">
+                                Rp. 6.000.000++
+                            </h2>
+                        </ScrollReveal>
+
+                        <ScrollReveal delay={100}>
+                            <h3 className="text-xl md:text-2xl font-black text-brand-white tracking-[0.2em] mb-4 uppercase">Open Registration</h3>
+                            <h2 className="text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-brand-purple to-brand-pink tracking-tighter mb-4 drop-shadow-[0_0_20px_rgba(213,172,255,0.3)]">
+                                20 JULY - 9 AUGUST
+                            </h2>
+                        </ScrollReveal>
+                    </div>
+
+                    {/* Timeline Header */}
+                    <ScrollReveal className="text-center mb-24 mt-20">
+                        <h2 className="text-4xl md:text-5xl font-black text-brand-white tracking-[0.3em] uppercase drop-shadow-[0_0_15px_rgba(112,56,242,0.5)]">
+                            TIMELINE
+                        </h2>
+                    </ScrollReveal>
+
+                    {/* Horizontal Timeline (Desktop) */}
+                    <div className="relative w-full max-w-7xl mx-auto hidden lg:block mb-10 overflow-x-auto pb-8 pt-8">
+                        <div className="min-w-[1000px]">
+                            {/* Horizontal Line */}
+                            <div className="absolute top-[50%] left-0 w-full h-[2px] bg-brand-white -translate-y-1/2"></div>
+
+                            <div className="flex justify-between relative w-full h-[320px]">
+                                {timelineData.map((item, index) => (
+                                    <div key={index} className="relative flex flex-col items-center flex-1">
+                                        {/* Dot */}
+                                        <div className="absolute top-[50%] left-1/2 w-6 h-6 bg-brand-purple rounded-full -translate-x-1/2 -translate-y-1/2 z-20 border-[4px] border-brand-black shadow-[0_0_10px_rgba(213,172,255,0.6)]"></div>
+
+                                        {/* Connecting Line */}
+                                        <div className={`absolute left-1/2 w-[2px] bg-brand-purple/50 -translate-x-1/2 z-10 ${index % 2 === 0 ? 'bottom-[50%] h-[40px]' : 'top-[50%] h-[40px]'}`}></div>
+
+                                        {/* Content Box */}
+                                        <div className={`w-full px-2 absolute ${index % 2 === 0 ? 'bottom-[calc(50%+40px)]' : 'top-[calc(50%+40px)]'} flex flex-col ${index % 2 === 0 ? 'justify-end' : 'justify-start'}`}>
+                                            <h4 className="text-[11px] xl:text-[13px] font-bold text-brand-white mb-1 leading-tight">{item.date}</h4>
+                                            <h3 className="text-xs xl:text-sm font-black text-brand-pink mb-1 leading-tight drop-shadow-md">{item.title}</h3>
+                                            <p className="text-[10px] xl:text-[11px] text-gray-400 leading-snug">{item.desc}</p>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Vertical Timeline (Mobile & Tablet) */}
+                    <div className="relative w-full mx-auto lg:hidden max-w-2xl px-4">
+                        <div className="absolute top-0 left-8 w-[2px] h-full bg-brand-white"></div>
+                        <div className="flex flex-col space-y-10 py-4">
+                            {timelineData.map((item, index) => (
+                                <div key={index} className="relative pl-14">
+                                    <div className="absolute top-0 left-4 w-5 h-5 bg-brand-purple rounded-full -translate-x-1/2 z-10 border-4 border-brand-black shadow-[0_0_10px_rgba(213,172,255,0.6)]"></div>
+                                    <h4 className="text-sm font-bold text-brand-white mb-1">{item.date}</h4>
+                                    <h3 className="text-base font-black text-brand-pink mb-1">{item.title}</h3>
+                                    <p className="text-xs text-gray-400 leading-relaxed">{item.desc}</p>
+                                </div>
+                            ))}
                         </div>
                     </div>
                 </div>

@@ -3,7 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\UiUxProgressResource\Pages;
-use App\Models\UiUxProgress;
+use App\Models\UiProgress;
 use App\Models\Tim;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -18,7 +18,7 @@ use Filament\Tables\Columns\IconColumn;
 
 class UiUxProgressResource extends Resource
 {
-    protected static ?string $model = UiUxProgress::class;
+    protected static ?string $model = UiProgress::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-swatch';
     protected static ?string $navigationGroup = 'Perlombaan';
