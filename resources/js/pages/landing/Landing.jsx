@@ -44,6 +44,26 @@ const timelineData = [
 ];
 
 export default function Landing() {
+    const [medparts, setMedparts] = useState([]);
+
+    useEffect(() => {
+        const fetchMedparts = async () => {
+            try {
+                // Since this is Landing page, we can just use native fetch or import api
+                // But api isn't imported yet, let's import it first if not.
+                // Wait, I can just use axios or native fetch.
+                const response = await fetch('/api/medpart');
+                const data = await response.json();
+                if (data.code === 200) {
+                    setMedparts(data.payload || []);
+                }
+            } catch (error) {
+                console.error("Failed to fetch medpart", error);
+            }
+        };
+        fetchMedparts();
+    }, []);
+
     return (
         <div className="w-full">
             {/* Hero Section */}
@@ -261,6 +281,29 @@ export default function Landing() {
                     </div>
                 </div>
             </section>
+
+            {/* Medpart / Sponsors Section */}
+            {medparts.length > 0 && (
+                <section id="partners" className="py-16 bg-brand-black border-t border-gray-900 relative">
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                        <div className="text-center mb-10">
+                            <h3 className="text-xl md:text-2xl font-bold text-gray-500 tracking-widest uppercase">Supported By</h3>
+                        </div>
+                        <div className="flex flex-wrap justify-center items-center gap-8 md:gap-16">
+                            {medparts.map((partner) => (
+                                <div key={partner.id} className="group relative flex items-center justify-center grayscale hover:grayscale-0 transition-all duration-500 opacity-60 hover:opacity-100">
+                                    <img 
+                                        src={`/storage/${partner.logo}`} 
+                                        alt={partner.nama} 
+                                        className="h-16 md:h-24 object-contain"
+                                        title={partner.nama}
+                                    />
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+            )}
         </div>
     );
 }
