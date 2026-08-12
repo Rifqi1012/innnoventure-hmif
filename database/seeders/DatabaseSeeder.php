@@ -13,6 +13,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+            User::updateOrCreate(
+            ['email' => 'vincentluhulima6010@gmail.com'],
+            [
+                'name' => 'Administrator',
+                'password' => bcrypt('admin123'),
+                'role' => 'admin',
+            ]
+        );
         // Admin Account for Filament
         User::updateOrCreate(
             ['email' => 'admin@innoventure.com'],

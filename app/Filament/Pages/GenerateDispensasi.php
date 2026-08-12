@@ -2,99 +2,119 @@
 
 namespace App\Filament\Pages;
 
-use Filament\Pages\Page;
-use Filament\Forms\Form;
+use App\Services\Surat\DispensasiService;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Repeater;
+use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
-use Filament\Forms\Contracts\HasForms;
+use Filament\Forms\Components\TimePicker;
+use Filament\Forms\Components\Toggle;
 use Filament\Forms\Concerns\InteractsWithForms;
-use Filament\Actions\Action;
-use Barryvdh\DomPDF\Facade\Pdf;
-use Illuminate\Support\Str;
+use Filament\Forms\Contracts\HasForms;
+use Filament\Forms\Form;
+use Filament\Pages\Page;
+use Illuminate\Validation\ValidationException;
 
 class GenerateDispensasi extends Page implements HasForms
 {
     use InteractsWithForms;
 
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
-    protected static ?string $navigationLabel = 'Surat Dispensasi';
+    protected static ?string $navigationLabel = 'Generate Surat';
+    protected static ?string $navigationGroup = 'Surat';
     protected static ?string $title = 'Generate Surat Dispensasi';
-
     protected static string $view = 'filament.pages.generate-dispensasi';
 
     public ?array $data = [];
 
     public function mount(): void
     {
-        $this->form->fill([
-            'hari' => 'Senin',
-            'tanggal' => '10 Agustus 2026',
-            'pukul' => '08:00 - 10:30 WIB',
-        ]);
+        $this->form->fill(DispensasiService::defaults());
     }
 
     public function form(Form $form): Form
     {
-        return $form
-            ->schema([
-                TextInput::make('hari')
-                    ->label('Hari')
-                    ->required(),
-                TextInput::make('tanggal')
-                    ->label('Tanggal')
-                    ->required(),
-                TextInput::make('pukul')
-                    ->label('Waktu (Pukul)')
-                    ->required(),
-                Textarea::make('data_peserta')
-                    ->label('Data Peserta (Nama - Kelas)')
-                    ->placeholder("Khoirul Ummam - XI RPL 1\nBudi Santoso - XI TKJ 2")
-                    ->helperText('Tulis tiap peserta di baris baru. Format: Nama - Kelas')
-                    ->rows(10)
-                    ->required()
-                    ->columnSpanFull(),
-            ])
-            ->statePath('data');
+        return $form->schema([
+            Section::make('Informasi Surat')->schema([
+                Select::make('jenis_surat')
+                    ->label('Jenis Surat')
+                    ->options(DispensasiService::templates())
+                    ->required()->live(),
+                TextInput::make('kota')->required()->maxLength(100)->live(debounce: 400),
+                DatePicker::make('tanggal_surat')->required()->native(false)->displayFormat('d F Y')->live(),
+                TextInput::make('judul')->required()->maxLength(150)->live(debounce: 400),
+                Textarea::make('pembuka')->required()->rows(5)->live(debounce: 500),
+                TextInput::make('hari_acara')->label('Hari Acara')->required()->readOnly()
+                    ->helperText('Otomatis mengikuti tanggal acara.'),
+                DatePicker::make('tanggal_acara')->required()->native(false)->displayFormat('d F Y')->live()
+                    ->afterStateUpdated(fn ($state, callable $set) => $set('hari_acara', DispensasiService::formatDay($state))),
+                TimePicker::make('jam_mulai')->seconds(false)->required()->live(),
+                TimePicker::make('jam_selesai')->seconds(false)->required()->live()
+                    ->after('jam_mulai')
+                    ->validationMessages(['after' => 'Jam selesai harus lebih besar dari jam mulai.']),
+            ])->columns(2),
+
+            Section::make('Data Peserta')->schema([
+                Repeater::make('peserta')->hiddenLabel()->schema([
+                    TextInput::make('nama')->required()->maxLength(150)->live(debounce: 400),
+                    TextInput::make('kelas')->required()->maxLength(100)->live(debounce: 400),
+                ])->columns(2)->minItems(1)->defaultItems(1)->addActionLabel('Tambah Peserta')
+                    ->reorderable(false)->live(),
+            ]),
+
+            Section::make('Tanda Tangan & Penandatangan')->schema([
+                Section::make('Ketua Himpunan Mahasiswa Teknik Informatika')->schema([
+                    TextInput::make('ketua_hmif.nama')->label('Nama')->required()->live(debounce: 400),
+                    TextInput::make('ketua_hmif.nim')->label('NIM')->required()->live(debounce: 400),
+                    Textarea::make('ketua_hmif.jabatan')->label('Jabatan')->rows(2)->required()->live(debounce: 400),
+                    FileUpload::make('ketua_hmif.signature')->label('Upload Tanda Tangan')
+                        ->disk('public')->directory('surat/signatures')->visibility('public')
+                        ->image()->acceptedFileTypes(['image/png', 'image/jpeg', 'image/webp'])
+                        ->maxSize(2048)->imagePreviewHeight('120')->openable()->downloadable()->live()
+                        ->helperText('PNG transparan direkomendasikan. Maksimal 2 MB.'),
+                    Toggle::make('ketua_hmif.tampilkan_ttd')->label('Tampilkan tanda tangan di surat')->live(),
+                ])->columnSpan(1),
+                Section::make('Ketua Pelaksana')->schema([
+                    TextInput::make('ketua_pelaksana.nama')->label('Nama')->required()->live(debounce: 400),
+                    TextInput::make('ketua_pelaksana.nim')->label('NIM')->required()->live(debounce: 400),
+                    Textarea::make('ketua_pelaksana.jabatan')->label('Jabatan')->rows(2)->required()->live(debounce: 400),
+                    FileUpload::make('ketua_pelaksana.signature')->label('Upload Tanda Tangan')
+                        ->disk('public')->directory('surat/signatures')->visibility('public')
+                        ->image()->acceptedFileTypes(['image/png', 'image/jpeg', 'image/webp'])
+                        ->maxSize(2048)->imagePreviewHeight('120')->openable()->downloadable()->live()
+                        ->helperText('PNG transparan direkomendasikan. Maksimal 2 MB.'),
+                    Toggle::make('ketua_pelaksana.tampilkan_ttd')->label('Tampilkan tanda tangan di surat')->live(),
+                ])->columnSpan(1),
+                Section::make('Stempel HMIF')->schema([
+                    FileUpload::make('stamp_hmif')->label('Upload Stempel HMIF')
+                        ->disk('public')->directory('surat/stamps')->visibility('public')
+                        ->image()->acceptedFileTypes(['image/png', 'image/jpeg', 'image/webp'])
+                        ->maxSize(2048)->imagePreviewHeight('120')->openable()->downloadable()->live()
+                        ->helperText('PNG transparan direkomendasikan. Maksimal 2 MB.'),
+                    Toggle::make('tampilkan_stempel')->label('Tampilkan stempel')->live(),
+                ])->columnSpanFull()->columns(2),
+            ])->columns(['default' => 1, 'xl' => 2]),
+        ])->statePath('data');
     }
 
-    public function generatePdf()
+    public function getPreviewDataProperty(): array
     {
-        $data = $this->form->getState();
-        
-        $pesertaLines = explode("\n", str_replace("\r", "", $data['data_peserta']));
-        $pesertaList = [];
-        
-        foreach ($pesertaLines as $line) {
-            $line = trim($line);
-            if (empty($line)) continue;
-            
-            // Try to split by '-' or ' - '
-            $parts = explode('-', $line);
-            if (count($parts) >= 2) {
-                // Take the last part as kelas, rest as nama
-                $kelas = trim(array_pop($parts));
-                $nama = trim(implode('-', $parts));
-                $pesertaList[] = ['nama' => $nama, 'kelas' => $kelas];
-            } else {
-                $pesertaList[] = ['nama' => $line, 'kelas' => '-'];
-            }
+        return DispensasiService::prepare($this->data ?? []);
+    }
+
+    public function generatePdf(DispensasiService $service)
+    {
+        $state = $this->form->getState();
+
+        if (($state['jam_selesai'] ?? '') <= ($state['jam_mulai'] ?? '')) {
+            throw ValidationException::withMessages([
+                'data.jam_selesai' => 'Jam selesai harus lebih besar dari jam mulai.',
+            ]);
         }
 
-        $pdfData = [
-            'hari' => $data['hari'],
-            'tanggal' => $data['tanggal'],
-            'pukul' => $data['pukul'],
-            'peserta' => $pesertaList,
-            'tanggal_surat' => now()->translatedFormat('d F Y'),
-        ];
-
-        $firstName = count($pesertaList) > 0 ? Str::slug($pesertaList[0]['nama']) : 'Peserta';
-        $filename = 'Surat_Dispensasi_' . $firstName . '.pdf';
-
-        $pdf = Pdf::loadView('pdf.dispensasi', $pdfData);
-        
-        return response()->streamDownload(function () use ($pdf) {
-            echo $pdf->stream();
-        }, $filename);
+        return $service->download($state);
     }
 }
