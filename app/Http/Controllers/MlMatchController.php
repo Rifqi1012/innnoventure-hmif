@@ -17,7 +17,12 @@ class MlMatchController extends Controller
 
     public function index()
     {
-        return $this->successResponse(MlMatch::with(['tim1', 'tim2', 'winner'])->get());
+        return $this->successResponse(
+            MlMatch::with(['tim1', 'tim2', 'winner'])
+                ->orderBy('round')
+                ->orderBy('id')
+                ->get()
+        );
     }
 
     public function show($id)

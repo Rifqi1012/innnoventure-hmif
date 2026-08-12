@@ -40,5 +40,9 @@ class DatabaseSeeder extends Seeder
                 'role' => 'participant',
             ]
         );
+
+        $this->call([
+            MobileLegendsDummySeeder::class,
+        ]);
     }
 }
