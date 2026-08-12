@@ -6,6 +6,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
 class DispensasiService
 {
@@ -92,8 +93,13 @@ class DispensasiService
 
     private static function resolveImage(mixed $uploadedPath, string $defaultFile, bool $forPdf): ?string
     {
+        $uploadedPath = self::firstFile($uploadedPath);
         $path = null;
         $url = null;
+
+        if (! $forPdf && $uploadedPath instanceof TemporaryUploadedFile) {
+            return $uploadedPath->temporaryUrl();
+        }
 
         if (is_string($uploadedPath) && Storage::disk('public')->exists($uploadedPath)) {
             $path = Storage::disk('public')->path($uploadedPath);
@@ -112,6 +118,12 @@ class DispensasiService
 
     private static function resolveUploadedImage(mixed $uploadedPath, bool $forPdf): ?string
     {
+        $uploadedPath = self::firstFile($uploadedPath);
+
+        if (! $forPdf && $uploadedPath instanceof TemporaryUploadedFile) {
+            return $uploadedPath->temporaryUrl();
+        }
+
         if (! is_string($uploadedPath) || ! Storage::disk('public')->exists($uploadedPath)) {
             return null;
         }
@@ -125,6 +137,15 @@ class DispensasiService
         $mime = mime_content_type($path) ?: 'image/png';
 
         return 'data:'.$mime.';base64,'.base64_encode(file_get_contents($path));
+    }
+
+    private static function firstFile(mixed $file): mixed
+    {
+        if (! is_array($file)) {
+            return $file;
+        }
+
+        return collect($file)->first(fn ($item) => is_string($item) || $item instanceof TemporaryUploadedFile);
     }
 
     public function download(array $state)

@@ -2,9 +2,32 @@
     <div class="grid grid-cols-1 gap-6 lg:grid-cols-12">
         <div id="surat-preview" class="lg:col-span-8">
             <x-filament::section heading="Live Preview Surat" description="Preview diperbarui otomatis mengikuti isi form.">
-                <div class="overflow-auto rounded-xl bg-gray-200 p-3 dark:bg-gray-800 sm:p-6">
-                    <div class="mx-auto w-[794px] max-w-none bg-white shadow-xl">
-                        @include('surat.dispensasi-document', ['data' => $this->previewData, 'preview' => true])
+                <div
+                    class="overflow-hidden rounded-xl bg-gray-200 p-3 dark:bg-gray-800 sm:p-6"
+                    x-data="{
+                        scale: 1,
+                        resizeObserver: null,
+                        resizePreview() {
+                            this.scale = Math.min(this.$refs.viewport.getBoundingClientRect().width / 794, 1)
+                        },
+                    }"
+                    x-init="$nextTick(() => {
+                        resizePreview()
+                        resizeObserver = new ResizeObserver(() => resizePreview())
+                        resizeObserver.observe($refs.viewport)
+                    })"
+                >
+                    <div
+                        x-ref="viewport"
+                        class="mx-auto w-full max-w-[794px] overflow-hidden"
+                        x-bind:style="`height: ${1123 * scale}px`"
+                    >
+                        <div
+                            class="h-[1123px] w-[794px] origin-top-left bg-white shadow-xl"
+                            x-bind:style="`width: 794px; height: 1123px; transform-origin: top left; transform: scale(${scale})`"
+                        >
+                            @include('surat.dispensasi-document', ['data' => $this->previewData, 'preview' => true])
+                        </div>
                     </div>
                 </div>
             </x-filament::section>

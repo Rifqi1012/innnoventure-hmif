@@ -22,13 +22,19 @@
 
     .surat-document.preview {
         position: relative;
-        width: 210mm;
-        min-height: 297mm;
-        padding: 38mm 18mm 28mm;
-        transform-origin: top center;
+        width: 794px;
+        height: 1123px;
+        min-height: 1123px;
+        padding: 144px 68px 106px;
+        overflow: hidden;
     }
-    .surat-document.preview .pdf-header { position: absolute; top: 0; left: 0; width: 210mm; height: 33.7mm; }
-    .surat-document.preview .pdf-footer { position: absolute; bottom: 0; left: 0; width: 210mm; height: 25mm; }
+    .surat-document.preview .pdf-header { position: absolute; top: 0; left: 0; right: 0; width: 794px; height: 127px; }
+    .surat-document.preview .pdf-header img { width: 100%; height: 100%; max-width: none; object-fit: fill; }
+    .surat-document.preview .pdf-content { width: 658px; }
+    .surat-document.preview .pdf-footer { position: absolute; bottom: 0; left: 0; right: 0; width: 794px; height: 95px; }
+    .surat-document.preview .pdf-footer-content { height: 76px; padding-top: 15px; }
+    .surat-document.preview .footer-yellow-line { left: 0; right: 0; width: 794px; height: 19px; }
+    .surat-document.preview .surat-signature { object-fit: contain; }
 
     .pdf-header { margin: 0; padding: 0; overflow: hidden; }
     .pdf-header img { display: block; width: 210mm; height: 33.7mm; max-width: none; margin: 0; padding: 0; }
