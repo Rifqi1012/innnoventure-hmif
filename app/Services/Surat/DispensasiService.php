@@ -67,7 +67,9 @@ class DispensasiService
             'kop' => self::resolveImage(null, 'kop-surat.png', $forPdf),
             'ketua_hmif' => self::resolveImage($data['ketua_hmif']['signature'], 'ttd-ketua-hmif.png', $forPdf),
             'ketua_pelaksana' => self::resolveImage($data['ketua_pelaksana']['signature'], 'ttd-ketua-pelaksana.png', $forPdf),
-            'stamp_hmif' => self::resolveImage($data['stamp_hmif'], 'stempel-hmif.png', $forPdf),
+            // A separate stamp is optional. Do not force a default stamp when
+            // the uploaded HMIF signature already contains one.
+            'stamp_hmif' => self::resolveUploadedImage($data['stamp_hmif'], $forPdf),
         ];
 
         return $data;
@@ -105,6 +107,23 @@ class DispensasiService
         if (! $forPdf) return $url;
 
         $mime = mime_content_type($path) ?: 'image/png';
+        return 'data:'.$mime.';base64,'.base64_encode(file_get_contents($path));
+    }
+
+    private static function resolveUploadedImage(mixed $uploadedPath, bool $forPdf): ?string
+    {
+        if (! is_string($uploadedPath) || ! Storage::disk('public')->exists($uploadedPath)) {
+            return null;
+        }
+
+        $path = Storage::disk('public')->path($uploadedPath);
+
+        if (! $forPdf) {
+            return Storage::disk('public')->url($uploadedPath);
+        }
+
+        $mime = mime_content_type($path) ?: 'image/png';
+
         return 'data:'.$mime.';base64,'.base64_encode(file_get_contents($path));
     }
 

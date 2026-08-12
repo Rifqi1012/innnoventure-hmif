@@ -2,53 +2,43 @@
     $preview = $preview ?? false;
 @endphp
 <style>
-    @if(! $preview)
-        @page {
-            size: A4 portrait;
-            margin: 43mm 18mm 33mm;
-        }
-
-        html, body { margin: 0; padding: 0; }
-    @endif
-
     .surat-document { color: #111; background: #fff; font-family: "DejaVu Serif", "Times New Roman", serif; font-size: 11pt; line-height: 1.45; }
     .surat-document, .surat-document * { box-sizing: border-box; }
 
     .surat-document.pdf .pdf-header {
         position: fixed;
-        top: -43mm;
+        top: -38mm;
         left: -18mm;
-        right: -18mm;
-        width: auto;
+        width: 210mm;
         height: 33.7mm;
     }
     .surat-document.pdf .pdf-footer {
         position: fixed;
-        bottom: -33mm;
+        bottom: -25mm;
         left: -18mm;
-        right: -18mm;
-        height: 29.3mm;
+        width: 210mm;
+        height: 25mm;
     }
 
     .surat-document.preview {
         position: relative;
         width: 210mm;
         min-height: 297mm;
-        padding: 43mm 18mm 33mm;
+        padding: 38mm 18mm 28mm;
         transform-origin: top center;
     }
-    .surat-document.preview .pdf-header { position: absolute; top: 0; left: 0; width: 100%; height: 33.7mm; }
-    .surat-document.preview .pdf-footer { position: absolute; bottom: 0; left: 0; right: 0; height: 29.3mm; }
+    .surat-document.preview .pdf-header { position: absolute; top: 0; left: 0; width: 210mm; height: 33.7mm; }
+    .surat-document.preview .pdf-footer { position: absolute; bottom: 0; left: 0; width: 210mm; height: 25mm; }
 
-    .pdf-header { width: 100%; margin: 0; padding: 0; overflow: hidden; }
-    .pdf-header img { display: block; width: 100%; height: 100%; max-width: none; margin: 0; padding: 0; object-fit: fill; }
+    .pdf-header { margin: 0; padding: 0; overflow: hidden; }
+    .pdf-header img { display: block; width: 210mm; height: 33.7mm; max-width: none; margin: 0; padding: 0; }
     .surat-kop-fallback { height: 33.7mm; padding: 8mm 18mm 0; border-top: 4mm solid #fff200; border-bottom: 1px solid #111; text-align: center; }
     .surat-kop-fallback strong { display: block; font-size: 14pt; }
     .surat-kop-fallback span { display: block; font-size: 9pt; }
 
     .pdf-footer { position: relative; color: #666; text-align: center; font-size: 9pt; line-height: 1.15; overflow: hidden; }
-    .pdf-footer-content { height: 26.3mm; padding-top: 6mm; }
-    .footer-yellow-line { position: absolute; bottom: 0; left: 0; right: 0; width: 100%; height: 3mm; margin: 0; padding: 0; background: #fff200; }
+    .pdf-footer-content { height: 20mm; padding-top: 4mm; }
+    .footer-yellow-line { position: absolute; bottom: 0; left: 0; width: 210mm; height: 5mm; margin: 0; padding: 0; background-color: #fff200; }
 
     .surat-date { margin: 0 0 18px; text-align: right; }
     .surat-title { margin-bottom: 20px; text-align: center; font-size: 14pt; font-weight: bold; text-decoration: underline; }
