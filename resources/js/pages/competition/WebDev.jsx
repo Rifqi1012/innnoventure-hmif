@@ -11,6 +11,7 @@ export default function WebDev() {
         email_ketua: '',
         judul_proyek: '',
         link_github: '',
+        link_demo: '',
         link_hosting: '',
     });
     const [teams, setTeams] = useState([]);
@@ -130,23 +131,28 @@ export default function WebDev() {
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                             <div>
-                                <label className="block text-sm font-bold text-slate-700 mb-2">GitHub Repository URL (Optional)</label>
-                                <input type="url" name="link_github" className="w-full px-5 py-3.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-slate-900 transition-all outline-none" placeholder="https://github.com/..." onChange={handleChange} />
+                                <label className="block text-sm font-bold text-slate-700 mb-2">GitHub Repository URL</label>
+                                <input type="url" name="link_github" required className="w-full px-5 py-3.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-slate-900 transition-all outline-none" placeholder="https://github.com/..." onChange={handleChange} />
                             </div>
                             <div>
-                                <label className="block text-sm font-bold text-slate-700 mb-2">Live Demo URL / Hosting (Optional)</label>
-                                <input type="url" name="link_hosting" className="w-full px-5 py-3.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-slate-900 transition-all outline-none" placeholder="https://..." onChange={handleChange} />
+                                <label className="block text-sm font-bold text-slate-700 mb-2">Video Demo URL (YouTube/Drive)</label>
+                                <input type="url" name="link_demo" required className="w-full px-5 py-3.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-slate-900 transition-all outline-none" placeholder="https://youtube.com/..." onChange={handleChange} />
                             </div>
+                        </div>
+
+                        <div className="mt-8 mb-8">
+                            <label className="block text-sm font-bold text-slate-700 mb-2">Website Hosting URL (Optional)</label>
+                            <input type="url" name="link_hosting" className="w-full px-5 py-3.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-slate-900 transition-all outline-none" placeholder="https://..." onChange={handleChange} />
                         </div>
 
                         <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200 space-y-6">
                             <div>
                                 <label className="block text-sm font-bold text-slate-700 mb-2">Upload Documentation (PDF)</label>
-                                <input type="file" accept=".pdf" className="block w-full text-sm text-slate-500 file:mr-4 file:py-2.5 file:px-6 file:rounded-xl file:border-0 file:text-sm file:font-bold file:bg-indigo-100 file:text-indigo-700 hover:file:bg-indigo-200 file:cursor-pointer file:transition-colors cursor-pointer" onChange={(e) => setPdfFile(e.target.files[0])} />
+                                <input type="file" accept=".pdf" required className="block w-full text-sm text-slate-500 file:mr-4 file:py-2.5 file:px-6 file:rounded-xl file:border-0 file:text-sm file:font-bold file:bg-indigo-100 file:text-indigo-700 hover:file:bg-indigo-200 file:cursor-pointer file:transition-colors cursor-pointer" onChange={(e) => setPdfFile(e.target.files[0])} />
                             </div>
                             <div>
                                 <label className="block text-sm font-bold text-slate-700 mb-2">Upload Pitch Deck (PPT/PDF)</label>
-                                <input type="file" accept=".ppt,.pptx,.pdf" className="block w-full text-sm text-slate-500 file:mr-4 file:py-2.5 file:px-6 file:rounded-xl file:border-0 file:text-sm file:font-bold file:bg-indigo-100 file:text-indigo-700 hover:file:bg-indigo-200 file:cursor-pointer file:transition-colors cursor-pointer" onChange={(e) => setPptFile(e.target.files[0])} />
+                                <input type="file" accept=".ppt,.pptx,.pdf" required className="block w-full text-sm text-slate-500 file:mr-4 file:py-2.5 file:px-6 file:rounded-xl file:border-0 file:text-sm file:font-bold file:bg-indigo-100 file:text-indigo-700 hover:file:bg-indigo-200 file:cursor-pointer file:transition-colors cursor-pointer" onChange={(e) => setPptFile(e.target.files[0])} />
                             </div>
                         </div>
 

@@ -38,10 +38,11 @@ class WebDevController extends Controller
             'tim_id'          => 'required|exists:tims,id',
             'email_ketua'     => 'required|email|unique:webdev_progress,email_ketua',
             'judul_proyek'    => 'required|string|max:255',
-            'link_github'     => 'nullable|url',
+            'link_github'     => 'required|url',
+            'link_demo'       => 'required|url',
             'link_hosting'    => 'nullable|url',
-            'pdf'             => 'nullable|file|extensions:pdf|max:51200',
-            'ppt'             => 'nullable|file|extensions:ppt,pptx,pdf|max:51200',
+            'pdf'             => 'required|file|extensions:pdf|max:51200',
+            'ppt'             => 'required|file|extensions:ppt,pptx,pdf|max:51200',
         ]);
 
         $progress = $this->competitionService->submitWebdev($validated);

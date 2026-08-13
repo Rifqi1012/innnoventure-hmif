@@ -58,7 +58,7 @@ class WebdevProgressResource extends Resource
                     ->required()
                     ->default('Catatan :'),
 
-                TextInput::make('link_repository')
+                TextInput::make('link_github')
                     ->label('Link Repository (GitHub/Drive)')
                     ->url()
                     ->maxLength(255)
@@ -137,7 +137,7 @@ class WebdevProgressResource extends Resource
                     ->url(fn($record) => $record->pdf ? Storage::url($record->pdf) : null)
                     ->openUrlInNewTab(),
 
-                IconColumn::make('link_repository')
+                IconColumn::make('link_github')
                     ->label('Repo')
                     ->boolean()
                     ->trueIcon('heroicon-o-link')
@@ -146,7 +146,7 @@ class WebdevProgressResource extends Resource
                         'success' => true,
                         'danger' => false,
                     ])
-                    ->url(fn($record) => $record->link_repository)
+                    ->url(fn($record) => $record->link_github)
                     ->openUrlInNewTab(),
 
                 IconColumn::make('link_demo')
