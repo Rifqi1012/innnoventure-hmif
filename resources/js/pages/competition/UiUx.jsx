@@ -57,7 +57,12 @@ export default function UiUx() {
             setMessage('Design submitted successfully!');
             setTimeout(() => navigate('/dashboard'), 2000);
         } catch (error) {
-            setMessage(error.response?.data?.message || 'Submission failed.');
+            if (error.response?.data?.errors) {
+                const errorMessages = Object.values(error.response.data.errors).flat().join(', ');
+                setMessage(errorMessages);
+            } else {
+                setMessage(error.response?.data?.message || 'Submission failed.');
+            }
         } finally {
             setIsSubmitting(false);
         }
