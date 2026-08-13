@@ -45,6 +45,7 @@ class DatabaseSeeder extends Seeder
             MobileLegendsDummySeeder::class,
             CompetitionDummySeeder::class,
             WebDevAspekPenilaianSeeder::class,
+            UiUxAspekPenilaianSeeder::class,
         ]);
     }
 }
