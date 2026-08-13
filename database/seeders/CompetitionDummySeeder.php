@@ -15,17 +15,29 @@ class CompetitionDummySeeder extends Seeder
         DB::transaction(function (): void {
             $webDev = CabangLomba::firstOrCreate(
                 ['nama' => 'WEB DEVELOPMENT'],
-                ['jenis_penilaian' => 'karya']
+                [
+                    'jenis_penilaian' => 'juri',
+                    'tanggal_mulai' => '2026-08-01',
+                    'tanggal_berakhir' => '2026-08-31',
+                ]
             );
 
             $uiUx = CabangLomba::firstOrCreate(
                 ['nama' => 'UI/UX'],
-                ['jenis_penilaian' => 'karya']
+                [
+                    'jenis_penilaian' => 'juri',
+                    'tanggal_mulai' => '2026-08-01',
+                    'tanggal_berakhir' => '2026-08-31',
+                ]
             );
             
             $ml = CabangLomba::firstOrCreate(
                 ['nama' => 'MOBILE LEGENDS'],
-                ['jenis_penilaian' => 'vs']
+                [
+                    'jenis_penilaian' => 'vs',
+                    'tanggal_mulai' => '2026-08-01',
+                    'tanggal_berakhir' => '2026-08-31',
+                ]
             );
 
             // Create 10 institutions

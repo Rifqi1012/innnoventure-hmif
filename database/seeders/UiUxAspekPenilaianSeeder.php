@@ -12,7 +12,11 @@ class UiUxAspekPenilaianSeeder extends Seeder
     {
         $uiUx = CabangLomba::firstOrCreate(
             ['nama' => 'UI/UX'],
-            ['jenis_penilaian' => 'karya']
+            [
+                'jenis_penilaian' => 'juri',
+                'tanggal_mulai' => '2026-08-01',
+                'tanggal_berakhir' => '2026-08-31',
+            ]
         );
 
         $aspekList = [
