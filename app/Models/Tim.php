@@ -12,7 +12,8 @@ class Tim extends Model
     protected $fillable = [
         'cabang_lomba_id',
         'nama',
-        'instansi_id'
+        'instansi_id',
+        'status',
     ];
 
     public function instansi()
