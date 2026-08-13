@@ -40,8 +40,8 @@ class WebDevController extends Controller
             'judul_proyek'    => 'required|string|max:255',
             'link_github'     => 'nullable|url',
             'link_hosting'    => 'nullable|url',
-            'pdf'             => 'nullable|file|mimes:pdf|max:51200',
-            'ppt'             => 'nullable|file|mimes:ppt,pptx,pdf|max:51200',
+            'pdf'             => 'nullable|file|extensions:pdf|max:51200',
+            'ppt'             => 'nullable|file|extensions:ppt,pptx,pdf|max:51200',
         ]);
 
         $progress = $this->competitionService->submitWebdev($validated);
