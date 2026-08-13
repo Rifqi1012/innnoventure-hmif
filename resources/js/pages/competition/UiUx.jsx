@@ -127,18 +127,18 @@ export default function UiUx() {
                         </div>
 
                         <div>
-                            <label className="block text-sm font-bold text-slate-700 mb-2">Figma Prototype URL</label>
-                            <input type="url" name="link_figma" required className="w-full px-5 py-3.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-pink-500 focus:border-pink-500 text-slate-900 transition-all outline-none" placeholder="https://www.figma.com/..." onChange={handleChange} />
+                            <label className="block text-sm font-bold text-slate-700 mb-2">Figma Prototype URL (Optional)</label>
+                            <input type="url" name="link_figma" className="w-full px-5 py-3.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-pink-500 focus:border-pink-500 text-slate-900 transition-all outline-none" placeholder="https://www.figma.com/..." onChange={handleChange} />
                         </div>
 
                         <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200 space-y-6">
                             <div>
                                 <label className="block text-sm font-bold text-slate-700 mb-2">Upload Documentation (PDF)</label>
-                                <input type="file" accept=".pdf" required className="block w-full text-sm text-slate-500 file:mr-4 file:py-2.5 file:px-6 file:rounded-xl file:border-0 file:text-sm file:font-bold file:bg-pink-100 file:text-pink-700 hover:file:bg-pink-200 file:cursor-pointer file:transition-colors cursor-pointer" onChange={(e) => setPdfFile(e.target.files[0])} />
+                                <input type="file" accept=".pdf" className="block w-full text-sm text-slate-500 file:mr-4 file:py-2.5 file:px-6 file:rounded-xl file:border-0 file:text-sm file:font-bold file:bg-pink-100 file:text-pink-700 hover:file:bg-pink-200 file:cursor-pointer file:transition-colors cursor-pointer" onChange={(e) => setPdfFile(e.target.files[0])} />
                             </div>
                             <div>
                                 <label className="block text-sm font-bold text-slate-700 mb-2">Upload Pitch Deck (PPT/PDF)</label>
-                                <input type="file" accept=".ppt,.pptx,.pdf" required className="block w-full text-sm text-slate-500 file:mr-4 file:py-2.5 file:px-6 file:rounded-xl file:border-0 file:text-sm file:font-bold file:bg-pink-100 file:text-pink-700 hover:file:bg-pink-200 file:cursor-pointer file:transition-colors cursor-pointer" onChange={(e) => setPptFile(e.target.files[0])} />
+                                <input type="file" accept=".ppt,.pptx,.pdf" className="block w-full text-sm text-slate-500 file:mr-4 file:py-2.5 file:px-6 file:rounded-xl file:border-0 file:text-sm file:font-bold file:bg-pink-100 file:text-pink-700 hover:file:bg-pink-200 file:cursor-pointer file:transition-colors cursor-pointer" onChange={(e) => setPptFile(e.target.files[0])} />
                             </div>
                         </div>
 

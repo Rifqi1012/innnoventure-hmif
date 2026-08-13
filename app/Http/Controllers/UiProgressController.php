@@ -39,8 +39,8 @@ class UiProgressController extends Controller
             'email_ketua'     => 'required|email|unique:ui_progress,email_ketua',
             'judul_proyek'    => 'required|string|max:255',
             'link_figma'      => 'nullable|url',
-            'pdf'             => 'nullable|file|mimes:pdf|max:5120',
-            'ppt'             => 'nullable|file|mimes:ppt,pptx,pdf|max:10240',
+            'pdf'             => 'nullable|file|mimes:pdf|max:51200',
+            'ppt'             => 'nullable|file|mimes:ppt,pptx,pdf|max:51200',
         ]);
 
         $progress = $this->competitionService->submitUi($validated);
