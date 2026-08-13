@@ -43,6 +43,7 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             MobileLegendsDummySeeder::class,
+            CompetitionDummySeeder::class,
         ]);
     }
 }
