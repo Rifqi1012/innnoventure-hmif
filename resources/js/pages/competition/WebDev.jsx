@@ -25,8 +25,8 @@ export default function WebDev() {
                 const response = await api.get('/tim');
                 // Filter teams to Web Development or just show all for now
                 // Assuming backend returns an array of teams inside response.data.data
-                const webDevTeams = response.data.data.filter(t => t.cabang_lomba?.nama === 'Web Development');
-                setTeams(webDevTeams.length > 0 ? webDevTeams : response.data.data);
+                const webDevTeams = response.data.data.filter(t => t.cabang_lomba?.nama === 'WEB DEVELOPMENT');
+                setTeams(webDevTeams);
             } catch (error) {
                 console.error("Failed to fetch teams", error);
             }

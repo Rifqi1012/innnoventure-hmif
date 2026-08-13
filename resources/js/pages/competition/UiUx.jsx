@@ -23,8 +23,8 @@ export default function UiUx() {
             try {
                 const response = await api.get('/tim');
                 // Filter teams to UI/UX Design or show all
-                const uiuxTeams = response.data.data.filter(t => t.cabang_lomba?.nama === 'UI/UX Design');
-                setTeams(uiuxTeams.length > 0 ? uiuxTeams : response.data.data);
+                const uiuxTeams = response.data.data.filter(t => t.cabang_lomba?.nama === 'UI/UX');
+                setTeams(uiuxTeams);
             } catch (error) {
                 console.error("Failed to fetch teams", error);
             }
