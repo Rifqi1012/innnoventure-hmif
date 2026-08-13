@@ -11,6 +11,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Storage;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
 use Filament\Tables\Columns\TextColumn;
@@ -104,7 +105,7 @@ class UiUxProgressResource extends Resource
                     ->boolean()
                     ->trueIcon('heroicon-o-document-text')
                     ->falseIcon('heroicon-o-x-mark')
-                    ->url(fn($record) => $record->pdf)
+                    ->url(fn($record) => $record->pdf ? Storage::url($record->pdf) : null)
                     ->openUrlInNewTab(),
 
                 IconColumn::make('ppt')
@@ -112,7 +113,7 @@ class UiUxProgressResource extends Resource
                     ->boolean()
                     ->trueIcon('heroicon-o-presentation-chart-line')
                     ->falseIcon('heroicon-o-x-mark')
-                    ->url(fn($record) => $record->ppt)
+                    ->url(fn($record) => $record->ppt ? Storage::url($record->ppt) : null)
                     ->openUrlInNewTab(),
             ])
             ->filters([

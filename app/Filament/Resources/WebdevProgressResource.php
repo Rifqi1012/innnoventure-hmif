@@ -125,17 +125,17 @@ class WebdevProgressResource extends Resource
                         return strlen($state) > 50 ? $state : null;
                     }),
 
-                // IconColumn::make('catatan')
-                //     ->label('PDF')
-                //     ->boolean()
-                //     ->trueIcon('heroicon-o-document-text')
-                //     ->falseIcon('heroicon-o-x-mark')
-                //     ->colors([
-                //         'success' => true,
-                //         'danger' => false,
-                //     ])
-                //     ->url(fn($record) => $record->catatan ? Storage::url($record->catatan) : null)
-                //     ->openUrlInNewTab(),
+                IconColumn::make('pdf')
+                    ->label('PDF')
+                    ->boolean()
+                    ->trueIcon('heroicon-o-document-text')
+                    ->falseIcon('heroicon-o-x-mark')
+                    ->colors([
+                        'success' => true,
+                        'danger' => false,
+                    ])
+                    ->url(fn($record) => $record->pdf ? Storage::url($record->pdf) : null)
+                    ->openUrlInNewTab(),
 
                 IconColumn::make('link_repository')
                     ->label('Repo')
@@ -182,8 +182,7 @@ class WebdevProgressResource extends Resource
                         'success' => true,
                         'danger' => false,
                     ])
-                    ->url(fn($record) => $record->ppt)
-                    // ->url(fn($record) => $record->ppt ? Storage::url($record->ppt) : null)
+                    ->url(fn($record) => $record->ppt ? Storage::url($record->ppt) : null)
                     ->openUrlInNewTab(),
             ])
             ->filters([
