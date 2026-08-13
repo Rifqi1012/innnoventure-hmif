@@ -24,17 +24,26 @@ class Penilaian extends Model
      */
     protected $fillable = [
         'webdev_progress_id',
+        'ui_progress_id',
         'aspek_penilaian_id',
         'juri_id',
         'skor',
     ];
 
     /**
-     * Get the project submission that owns the score.
+     * Get the webdev project submission that owns the score.
      */
     public function webdevProgress(): BelongsTo
     {
         return $this->belongsTo(WebdevProgress::class);
+    }
+
+    /**
+     * Get the uiux project submission that owns the score.
+     */
+    public function uiProgress(): BelongsTo
+    {
+        return $this->belongsTo(UiProgress::class);
     }
 
     /**
