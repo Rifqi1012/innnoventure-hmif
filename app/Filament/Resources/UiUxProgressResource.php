@@ -130,11 +130,35 @@ class UiUxProgressResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                     ExportBulkAction::make()->exports([
-                        ExcelExport::make('export')->fromTable()->withColumns([
-                            Column::make('link_figma')->heading('Link Figma')->getStateUsing(fn ($record) => $record->link_figma ? (filter_var($record->link_figma, FILTER_VALIDATE_URL) ? $record->link_figma : url(\Illuminate\Support\Facades\Storage::url($record->link_figma))) : null),
-                            Column::make('ppt')->heading('Link PPT')->getStateUsing(fn ($record) => $record->ppt ? (filter_var($record->ppt, FILTER_VALIDATE_URL) ? $record->ppt : url(\Illuminate\Support\Facades\Storage::url($record->ppt))) : null),
-                            Column::make('pdf')->heading('Link PDF')->getStateUsing(fn ($record) => $record->pdf ? (filter_var($record->pdf, FILTER_VALIDATE_URL) ? $record->pdf : url(\Illuminate\Support\Facades\Storage::url($record->pdf))) : null),
-                        ]),
+                        ExcelExport::make('export')
+                            ->label('Export Data & Lembar Penilaian')
+                            ->withFilename(fn () => 'Data-Penilaian-UIUX-' . date('Y-m-d'))
+                            ->fromTable()
+                            ->withColumns(array_merge(
+                                [
+                                    Column::make('link_figma')->heading('Link Figma')->getStateUsing(function ($record) {
+                                        $url = $record->link_figma ? (filter_var($record->link_figma, FILTER_VALIDATE_URL) ? $record->link_figma : url(\Illuminate\Support\Facades\Storage::url($record->link_figma))) : null;
+                                        return $url ? '=HYPERLINK("' . $url . '", "Buka Figma")' : '';
+                                    }),
+                                    Column::make('ppt')->heading('Link PPT')->getStateUsing(function ($record) {
+                                        $url = $record->ppt ? (filter_var($record->ppt, FILTER_VALIDATE_URL) ? $record->ppt : url(\Illuminate\Support\Facades\Storage::url($record->ppt))) : null;
+                                        return $url ? '=HYPERLINK("' . $url . '", "Buka PPT")' : '';
+                                    }),
+                                    Column::make('pdf')->heading('Link PDF')->getStateUsing(function ($record) {
+                                        $url = $record->pdf ? (filter_var($record->pdf, FILTER_VALIDATE_URL) ? $record->pdf : url(\Illuminate\Support\Facades\Storage::url($record->pdf))) : null;
+                                        return $url ? '=HYPERLINK("' . $url . '", "Buka PDF")' : '';
+                                    }),
+                                ],
+                                \App\Models\AspekPenilaian::whereHas('cabangLomba', fn($q) => $q->where('nama', 'UI/UX'))->get()->map(function ($aspek) {
+                                    return Column::make('aspek_' . $aspek->id)
+                                        ->heading("{$aspek->nama} ({$aspek->bobot_penilaian}%)")
+                                        ->getStateUsing(fn () => '');
+                                })->toArray(),
+                                [
+                                    Column::make('total_nilai')->heading('Total Nilai')->getStateUsing(fn () => ''),
+                                    Column::make('komentar')->heading('Komentar Juri')->getStateUsing(fn () => ''),
+                                ]
+                            )),
                     ]),
                 ]),
             ]);
