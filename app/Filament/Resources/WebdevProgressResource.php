@@ -18,6 +18,8 @@ use Filament\Forms\Components\Textarea;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\IconColumn;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
+use pxlrbt\FilamentExcel\Exports\ExcelExport;
+use pxlrbt\FilamentExcel\Columns\Column;
 
 class WebdevProgressResource extends Resource
 {
@@ -196,7 +198,15 @@ class WebdevProgressResource extends Resource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
-                    ExportBulkAction::make(),
+                    ExportBulkAction::make()->exports([
+                        ExcelExport::make('export')->fromTable()->withColumns([
+                            Column::make('link_github')->heading('Link GitHub')->getStateUsing(fn ($record) => $record->link_github ? (filter_var($record->link_github, FILTER_VALIDATE_URL) ? $record->link_github : url(\Illuminate\Support\Facades\Storage::url($record->link_github))) : null),
+                            Column::make('link_demo')->heading('Link Demo')->getStateUsing(fn ($record) => $record->link_demo ? (filter_var($record->link_demo, FILTER_VALIDATE_URL) ? $record->link_demo : url(\Illuminate\Support\Facades\Storage::url($record->link_demo))) : null),
+                            Column::make('link_hosting')->heading('Link Hosting')->getStateUsing(fn ($record) => $record->link_hosting ? (filter_var($record->link_hosting, FILTER_VALIDATE_URL) ? $record->link_hosting : url(\Illuminate\Support\Facades\Storage::url($record->link_hosting))) : null),
+                            Column::make('ppt')->heading('Link PPT')->getStateUsing(fn ($record) => $record->ppt ? (filter_var($record->ppt, FILTER_VALIDATE_URL) ? $record->ppt : url(\Illuminate\Support\Facades\Storage::url($record->ppt))) : null),
+                            Column::make('pdf')->heading('Link PDF')->getStateUsing(fn ($record) => $record->pdf ? (filter_var($record->pdf, FILTER_VALIDATE_URL) ? $record->pdf : url(\Illuminate\Support\Facades\Storage::url($record->pdf))) : null),
+                        ]),
+                    ]),
                 ]),
             ]);
     }

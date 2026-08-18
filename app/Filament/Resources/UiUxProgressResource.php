@@ -17,6 +17,8 @@ use Filament\Forms\Components\Textarea;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\IconColumn;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
+use pxlrbt\FilamentExcel\Exports\ExcelExport;
+use pxlrbt\FilamentExcel\Columns\Column;
 
 class UiUxProgressResource extends Resource
 {
@@ -127,7 +129,13 @@ class UiUxProgressResource extends Resource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
-                    ExportBulkAction::make(),
+                    ExportBulkAction::make()->exports([
+                        ExcelExport::make('export')->fromTable()->withColumns([
+                            Column::make('link_figma')->heading('Link Figma')->getStateUsing(fn ($record) => $record->link_figma ? (filter_var($record->link_figma, FILTER_VALIDATE_URL) ? $record->link_figma : url(\Illuminate\Support\Facades\Storage::url($record->link_figma))) : null),
+                            Column::make('ppt')->heading('Link PPT')->getStateUsing(fn ($record) => $record->ppt ? (filter_var($record->ppt, FILTER_VALIDATE_URL) ? $record->ppt : url(\Illuminate\Support\Facades\Storage::url($record->ppt))) : null),
+                            Column::make('pdf')->heading('Link PDF')->getStateUsing(fn ($record) => $record->pdf ? (filter_var($record->pdf, FILTER_VALIDATE_URL) ? $record->pdf : url(\Illuminate\Support\Facades\Storage::url($record->pdf))) : null),
+                        ]),
+                    ]),
                 ]),
             ]);
     }
