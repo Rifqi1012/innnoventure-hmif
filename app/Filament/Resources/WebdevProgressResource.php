@@ -17,9 +17,9 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\IconColumn;
-use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
-use pxlrbt\FilamentExcel\Exports\ExcelExport;
-use pxlrbt\FilamentExcel\Columns\Column;
+use App\Exports\PenilaianMultiSheetExport;
+use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Database\Eloquent\Collection;
 
 class WebdevProgressResource extends Resource
 {
@@ -198,56 +198,13 @@ class WebdevProgressResource extends Resource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
-                    ExportBulkAction::make()->exports([
-                        ExcelExport::make('export')
-                            ->label('Export Data & Lembar Penilaian')
-                            ->withFilename(fn () => 'Data-Penilaian-Web-' . date('Y-m-d'))
-                            ->withSheets([
-                                ExcelExport::make('data_pengumpulan')
-                                    ->label('Data Pengumpulan')
-                                    ->fromTable()
-                                    ->withColumns([
-                                        Column::make('link_github')->heading('Link GitHub')->getStateUsing(function ($record) {
-                                            $url = $record->link_github ? (filter_var($record->link_github, FILTER_VALIDATE_URL) ? $record->link_github : url(\Illuminate\Support\Facades\Storage::url($record->link_github))) : null;
-                                            return $url ? '=HYPERLINK("' . $url . '", "Buka GitHub")' : '';
-                                        }),
-                                        Column::make('link_demo')->heading('Link Demo')->getStateUsing(function ($record) {
-                                            $url = $record->link_demo ? (filter_var($record->link_demo, FILTER_VALIDATE_URL) ? $record->link_demo : url(\Illuminate\Support\Facades\Storage::url($record->link_demo))) : null;
-                                            return $url ? '=HYPERLINK("' . $url . '", "Buka Demo")' : '';
-                                        }),
-                                        Column::make('link_hosting')->heading('Link Hosting')->getStateUsing(function ($record) {
-                                            $url = $record->link_hosting ? (filter_var($record->link_hosting, FILTER_VALIDATE_URL) ? $record->link_hosting : url(\Illuminate\Support\Facades\Storage::url($record->link_hosting))) : null;
-                                            return $url ? '=HYPERLINK("' . $url . '", "Buka Hosting")' : '';
-                                        }),
-                                        Column::make('ppt')->heading('Link PPT')->getStateUsing(function ($record) {
-                                            $url = $record->ppt ? (filter_var($record->ppt, FILTER_VALIDATE_URL) ? $record->ppt : url(\Illuminate\Support\Facades\Storage::url($record->ppt))) : null;
-                                            return $url ? '=HYPERLINK("' . $url . '", "Buka PPT")' : '';
-                                        }),
-                                        Column::make('pdf')->heading('Link PDF')->getStateUsing(function ($record) {
-                                            $url = $record->pdf ? (filter_var($record->pdf, FILTER_VALIDATE_URL) ? $record->pdf : url(\Illuminate\Support\Facades\Storage::url($record->pdf))) : null;
-                                            return $url ? '=HYPERLINK("' . $url . '", "Buka PDF")' : '';
-                                        }),
-                                    ]),
-                                ExcelExport::make('lembar_penilaian')
-                                    ->label('Lembar Penilaian')
-                                    ->fromTable()
-                                    ->withColumns(array_merge(
-                                        [
-                                            Column::make('tim.nama')->heading('Nama Tim'),
-                                            Column::make('judul_proyek')->heading('Judul Proyek'),
-                                        ],
-                                        \App\Models\AspekPenilaian::whereHas('cabangLomba', fn($q) => $q->where('nama', 'WEB DEVELOPMENT'))->get()->map(function ($aspek) {
-                                            return Column::make('aspek_' . $aspek->id)
-                                                ->heading("{$aspek->nama} ({$aspek->bobot_penilaian}%)")
-                                                ->getStateUsing(fn () => '');
-                                        })->toArray(),
-                                        [
-                                            Column::make('total_nilai')->heading('Total Nilai')->getStateUsing(fn () => ''),
-                                            Column::make('komentar')->heading('Komentar Juri')->getStateUsing(fn () => ''),
-                                        ]
-                                    )),
-                            ]),
-                    ]),
+                    Tables\Actions\BulkAction::make('export_penilaian')
+                        ->label('Export Data & Lembar Penilaian')
+                        ->icon('heroicon-o-arrow-down-tray')
+                        ->action(fn (Collection $records) => Excel::download(
+                            new PenilaianMultiSheetExport($records, 'WEB DEVELOPMENT'), 
+                            'Data-Penilaian-Web-' . date('Y-m-d') . '.xlsx'
+                        )),
                 ]),
             ]);
     }
