@@ -43,15 +43,21 @@ class PenilaianResource extends Resource
 
                 Select::make('webdev_progress_id')
                     ->label('Tim Web Dev')
-                    ->relationship('webdevProgress.tim', 'nama')
+                    ->options(function () {
+                        return \App\Models\WebdevProgress::with('tim')->get()->pluck('tim.nama', 'id');
+                    })
                     ->visible(fn (Forms\Get $get) => $get('cabang_lomba_id') === 'webdev')
-                    ->required(fn (Forms\Get $get) => $get('cabang_lomba_id') === 'webdev'),
+                    ->required(fn (Forms\Get $get) => $get('cabang_lomba_id') === 'webdev')
+                    ->searchable(),
 
                 Select::make('ui_progress_id')
                     ->label('Tim UI/UX')
-                    ->relationship('uiProgress.tim', 'nama')
+                    ->options(function () {
+                        return \App\Models\UiProgress::with('tim')->get()->pluck('tim.nama', 'id');
+                    })
                     ->visible(fn (Forms\Get $get) => $get('cabang_lomba_id') === 'uiux')
-                    ->required(fn (Forms\Get $get) => $get('cabang_lomba_id') === 'uiux'),
+                    ->required(fn (Forms\Get $get) => $get('cabang_lomba_id') === 'uiux')
+                    ->searchable(),
 
                 Select::make('aspek_penilaian_id')
                     ->label('Aspek Penilaian')
