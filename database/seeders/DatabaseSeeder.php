@@ -17,8 +17,24 @@ class DatabaseSeeder extends Seeder
             ['email' => 'vincentluhulima6010@gmail.com'],
             [
                 'name' => 'Administrator',
-                'password' => bcrypt('admin123'),
+                'password' => bcrypt('admininnochapter2'),
                 'role' => 'admin',
+            ]
+        );
+        User::updateOrCreate(
+            ['email' => 'rizki@gmail.com'],
+            [
+                'name' => 'INI IKI',
+                'password' => bcrypt('admininnochapter2'),
+                'role' => 'admin',
+            ]
+        );
+        User::updateOrCreate(
+            ['email' => '60202302171@std.uin-suka.ac.id'],
+            [
+                'name' => 'Kelompok 1',
+                'password' => bcrypt('kelompok1'),
+                'role' => 'participant',
             ]
         );
         // Admin Account for Filament
@@ -26,7 +42,7 @@ class DatabaseSeeder extends Seeder
             ['email' => 'admin@innoventure.com'],
             [
                 'name' => 'Administrator',
-                'password' => bcrypt('admin123'),
+                'password' => bcrypt('admininnochapter2'),
                 'role' => 'admin',
             ]
         );
@@ -43,9 +59,9 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             MobileLegendsDummySeeder::class,
-            CompetitionDummySeeder::class,
-            WebDevAspekPenilaianSeeder::class,
-            UiUxAspekPenilaianSeeder::class,
+            PesertaSeeder::class,
+            // WebDevAspekPenilaianSeeder::class,
+            // UiUxAspekPenilaianSeeder::class,
         ]);
     }
 }

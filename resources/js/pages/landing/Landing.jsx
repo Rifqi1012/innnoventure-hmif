@@ -92,19 +92,19 @@ export default function Landing() {
 
                 <ScrollReveal className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
                     <div className="animate-floating">
-                        <div className="inline-block mb-6 px-4 py-2 rounded-full bg-brand-pink/10 border border-brand-pink/30 text-brand-purple font-semibold text-sm tracking-widest uppercase shadow-[0_0_15px_rgba(213,172,255,0.4)]">
+                        <div className="inline-block mb-6 px-3 py-2 md:px-4 md:py-2 rounded-full bg-brand-pink/10 border border-brand-pink/30 text-brand-purple font-semibold text-xs md:text-sm tracking-widest uppercase shadow-[0_0_15px_rgba(213,172,255,0.4)]">
                             Event IT se-Jawa Barat untuk SMA/SMK
                         </div>
-                        <h2 className="text-3xl md:text-5xl font-black text-brand-white tracking-widest mb-2 uppercase drop-shadow-lg">
+                        <h2 className="text-xl sm:text-3xl md:text-5xl font-black text-brand-white tracking-widest mb-2 uppercase drop-shadow-lg">
                             Innovation Adventure
                         </h2>
-                        <h1 className="text-7xl md:text-9xl font-black text-transparent bg-clip-text bg-gradient-to-r from-brand-purple to-brand-pink tracking-tighter mb-2 leading-none drop-shadow-2xl">
+                        <h1 className="text-4xl sm:text-7xl md:text-9xl font-black text-transparent bg-clip-text bg-gradient-to-r from-brand-purple to-brand-pink tracking-tighter mb-2 leading-none drop-shadow-2xl">
                             INNOVENTURE
                         </h1>
-                        <h2 className="text-4xl md:text-6xl font-black text-brand-pink tracking-widest mb-6 uppercase drop-shadow-lg">
+                        <h2 className="text-2xl sm:text-4xl md:text-6xl font-black text-brand-pink tracking-widest mb-6 uppercase drop-shadow-lg">
                             CHAPTER II
                         </h2>
-                        <p className="text-xl md:text-2xl text-brand-white/90 max-w-3xl mx-auto mb-10 leading-relaxed font-medium drop-shadow-md">
+                        <p className="text-sm sm:text-xl md:text-2xl text-brand-white/90 max-w-3xl mx-auto px-4 mb-10 leading-relaxed font-medium drop-shadow-md">
                             "Code Your Passion, Create The Future, Be The Catalyst"
                         </p>
                         <div className="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-6">
