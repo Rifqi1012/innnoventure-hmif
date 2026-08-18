@@ -35,7 +35,7 @@ class WebDevController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'tim_id'          => 'required|exists:tims,id',
+            'tim_id'          => 'required|exists:tims,id|unique:webdev_progress,tim_id',
             'email_ketua'     => 'required|email|unique:webdev_progress,email_ketua',
             'judul_proyek'    => 'required|string|max:255',
             'link_github'     => 'required|url',
@@ -43,6 +43,9 @@ class WebDevController extends Controller
             'link_hosting'    => 'nullable|url',
             'pdf'             => 'required|file|extensions:pdf|max:51200',
             'ppt'             => 'required|file|extensions:ppt,pptx,pdf|max:51200',
+        ], [
+            'tim_id.unique' => 'Tim Anda sudah melakukan pengumpulan sebelumnya. Pengumpulan hanya dapat dilakukan 1 kali.',
+            'email_ketua.unique' => 'Email ketua sudah digunakan untuk pengumpulan sebelumnya.',
         ]);
 
         $progress = $this->competitionService->submitWebdev($validated);
