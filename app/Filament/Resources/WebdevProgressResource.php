@@ -17,6 +17,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\IconColumn;
+use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 
 class WebdevProgressResource extends Resource
 {
@@ -195,6 +196,7 @@ class WebdevProgressResource extends Resource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
+                    ExportBulkAction::make(),
                 ]),
             ]);
     }

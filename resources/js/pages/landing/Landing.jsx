@@ -45,13 +45,11 @@ const timelineData = [
 
 export default function Landing() {
     const [medparts, setMedparts] = useState([]);
+    const [sponsors, setSponsors] = useState([]);
 
     useEffect(() => {
         const fetchMedparts = async () => {
             try {
-                // Since this is Landing page, we can just use native fetch or import api
-                // But api isn't imported yet, let's import it first if not.
-                // Wait, I can just use axios or native fetch.
                 const response = await fetch('/api/medpart');
                 const data = await response.json();
                 if (data.code === 200) {
@@ -61,7 +59,19 @@ export default function Landing() {
                 console.error("Failed to fetch medpart", error);
             }
         };
+        const fetchSponsors = async () => {
+            try {
+                const response = await fetch('/api/sponsor');
+                const data = await response.json();
+                if (data.code === 200) {
+                    setSponsors(data.payload || []);
+                }
+            } catch (error) {
+                console.error("Failed to fetch sponsor", error);
+            }
+        };
         fetchMedparts();
+        fetchSponsors();
     }, []);
 
     return (
@@ -282,7 +292,44 @@ export default function Landing() {
                 </div>
             </section>
 
-            {/* Medpart / Sponsors Section */}
+            {/* Sponsors Section */}
+            {sponsors.length > 0 && (
+                <section id="sponsors" className="py-12 bg-brand-black border-t border-brand-purple/20 relative overflow-hidden">
+                    {/* Premium Glow Effect */}
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[250px] bg-brand-purple/10 rounded-full blur-[100px] pointer-events-none"></div>
+
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                        <div className="text-center mb-10">
+                            <div className="inline-block mb-3 px-5 py-1.5 rounded-full bg-brand-pink/10 border border-brand-pink/30 shadow-[0_0_10px_rgba(213,172,255,0.2)]">
+                                <h3 className="text-xs md:text-sm font-bold text-brand-pink tracking-widest uppercase">Sponsored By</h3>
+                            </div>
+                            <h2 className="text-2xl md:text-3xl font-black text-brand-white tracking-tight">
+                                Our Incredible Partners
+                            </h2>
+                        </div>
+                        
+                        <div className="flex flex-wrap justify-center items-center gap-6 md:gap-10">
+                            {sponsors.map((partner) => (
+                                <div key={partner.id} className="group relative flex items-center justify-center transition-all duration-300 hover:scale-105">
+                                    {/* Hover Aura */}
+                                    <div className="absolute inset-0 bg-brand-purple/30 blur-2xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
+                                    
+                                    <div className="relative bg-brand-white/5 border border-brand-white/10 backdrop-blur-sm rounded-2xl px-6 py-4 md:px-8 md:py-6 shadow-xl group-hover:border-brand-purple/50 group-hover:bg-brand-white/10 transition-all duration-300">
+                                        <img 
+                                            src={`/storage/${partner.logo}`} 
+                                            alt={partner.nama} 
+                                            className="h-14 md:h-20 max-w-[140px] md:max-w-[200px] object-contain drop-shadow-md"
+                                            title={partner.nama}
+                                        />
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+            )}
+
+            {/* Medpart Section */}
             {medparts.length > 0 && (
                 <section id="partners" className="py-16 bg-brand-black border-t border-gray-900 relative">
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

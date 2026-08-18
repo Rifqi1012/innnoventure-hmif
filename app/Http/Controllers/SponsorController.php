@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\DaftarSeminar;
+use App\Models\External;
 use Illuminate\Http\Request;
 
 class SponsorController extends Controller
@@ -10,7 +10,7 @@ class SponsorController extends Controller
 
     public function getAllSponsorsByType()
     {
-        $sponsors = DaftarSeminar::where('jenis', 'sponsor')
+        $sponsors = External::where('jenis', 'sponsor')
                             ->where('is_aktif', true)
                             ->get();
 
@@ -22,7 +22,7 @@ class SponsorController extends Controller
     }
     public function getSponsorById(int $id)
     {
-        $sponsor = DaftarSeminar::where('jenis', 'sponsor')
+        $sponsor = External::where('jenis', 'sponsor')
                            ->where('is_aktif', true)
                            ->find($id);
                            
