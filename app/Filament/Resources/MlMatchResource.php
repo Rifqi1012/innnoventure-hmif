@@ -23,6 +23,11 @@ class MlMatchResource extends Resource
     protected static ?int $navigationSort = 3;
     protected static ?string $pluralModelLabel = 'Mobile Legend';
 
+    public static function canViewAny(): bool
+    {
+        return auth()->user()->role === 'admin';
+    }
+
     public static function form(Form $form): Form
     {
         return $form

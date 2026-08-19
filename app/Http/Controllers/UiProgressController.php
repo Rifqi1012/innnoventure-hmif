@@ -34,6 +34,8 @@ class UiProgressController extends Controller
 
     public function store(Request $request)
     {
+        return $this->errorResponse('Mohon maaf, waktu pengumpulan proyek UI/UX sudah ditutup.', 403);
+
         $validated = $request->validate([
             'tim_id'          => 'required|exists:tims,id|unique:ui_progress,tim_id',
             'email_ketua'     => 'required|email|unique:ui_progress,email_ketua',

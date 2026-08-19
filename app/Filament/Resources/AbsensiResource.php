@@ -23,6 +23,11 @@ class AbsensiResource extends Resource
     protected static ?string $navigationGroup = 'Seminar'; // Ganti ikon agar lebih relevan
     protected static ?int $navigationSort = 10; // Ganti ikon agar lebih relevan
 
+    public static function canViewAny(): bool
+    {
+        return auth()->user()->role === 'admin';
+    }
+
     public static function form(Form $form): Form
     {
         return $form

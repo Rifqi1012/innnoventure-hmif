@@ -22,6 +22,11 @@ class TimResource extends Resource
     protected static ?int $navigationSort = 2;
     protected static ?string $pluralModelLabel = 'Tim';
 
+    public static function canViewAny(): bool
+    {
+        return auth()->user()->role === 'admin';
+    }
+
     public static function form(Form $form): Form
     {
         return $form

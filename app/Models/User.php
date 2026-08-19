@@ -55,8 +55,7 @@ class User extends Authenticatable implements FilamentUser
 
     public function canAccessPanel(Panel $panel): bool
     {
-        Log::info('canAccessPanel dipanggil untuk user id: ' . $this->id);
-        return $this->role === 'admin';
+        return $this->role === 'admin' || $this->role === 'juri';
     }
 
     // Kalau kamu mau, method ini bisa kamu hapus atau biarkan, tapi Filament default pakai canAccessPanel()

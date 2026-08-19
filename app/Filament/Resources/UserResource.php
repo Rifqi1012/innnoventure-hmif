@@ -20,6 +20,11 @@ class UserResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    public static function canViewAny(): bool
+    {
+        return auth()->user()->role === 'admin';
+    }
+
     public static function form(Form $form): Form
     {
         return $form
@@ -37,6 +42,7 @@ class UserResource extends Resource
                         'peserta_webdev' => 'Peserta Web Development',
                         'peserta_uiux' => 'Peserta UI/UX',
                         'peserta_ml' => 'Peserta Mobile Legends',
+                        'juri' => 'Juri (Penilai)',
                         'admin' => 'Administrator',
                     ])
                     ->required()
